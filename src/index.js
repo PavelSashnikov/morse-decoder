@@ -36,9 +36,28 @@ const MORSE_TABLE = {
     '----.':  '9',
     '-----':  '0',
 };
-
+function digitToMorse (digit) {
+    if (digit === '10') {
+        return '.'
+    } else if (digit === '11') {
+        return '-'
+    }else {
+        return digit
+    }
+}
 function decode(expr) {
-    // write your solution here
+    return expr.split('**********').map((word) => {
+       const lettersArr = word.match(/[\S\s]{1,10}/g);
+       
+       return lettersArr.map((letter) => {
+        const letterWithoutZero = letter.match(/^0*(1[0,1]*)/)[1];
+        let lettersTransformToMorse = '';
+           for (let i = 0; i < letterWithoutZero.length; i=i+2) {
+            lettersTransformToMorse += digitToMorse(letterWithoutZero[i]+letterWithoutZero[i+1])
+           }
+           return MORSE_TABLE[lettersTransformToMorse];
+       }).join('');
+    }).join(' ');
 }
 
 module.exports = {
